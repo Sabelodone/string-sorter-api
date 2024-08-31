@@ -4,6 +4,10 @@ const port = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.send('API is running. Use POST /sort-string to interact with the API.');
+});
+
 
 // Define the POST route for /sort-string
 app.post('/sort-string', (req, res) => {
