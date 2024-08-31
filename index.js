@@ -7,6 +7,10 @@ app.use(express.json());
 
 // Define the POST route for /sort-string
 app.post('/sort-string', (req, res) => {
+  // Log the incoming request for debugging
+  console.log('Request Body:', req.body);
+
+  // Extract data from the request body
   const data = req.body.data;
 
   // Check if 'data' is a string
@@ -19,7 +23,7 @@ app.post('/sort-string', (req, res) => {
   res.json({ word: sortedArray });
 });
 
-// This middleware handles any unmatched routes (404)
+// Middleware to handle unmatched routes (404)
 app.use((req, res) => {
   res.status(404)
     .type('text/html')
