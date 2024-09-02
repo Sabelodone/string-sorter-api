@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Root endpoint to verify the API is running
 app.get('/', (req, res) => {
   res.send('API is running. Use POST /sort-string to interact with the API.');
 });
-
 
 // Define the POST route for /sort-string
 app.post('/sort-string', (req, res) => {
@@ -24,6 +24,9 @@ app.post('/sort-string', (req, res) => {
 
   // Convert string to array, sort it, and return the result
   const sortedArray = data.split('').sort();
+  
+  // Set the correct Content-Type and return the sorted array as JSON
+  res.setHeader('Content-Type', 'application/json');
   res.json({ word: sortedArray });
 });
 
@@ -34,7 +37,8 @@ app.use((req, res) => {
     .send('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Error</title></head><body><pre>Cannot GET ' + req.originalUrl + '</pre></body></html>');
 });
 
-// Start the server
+// Start the server (use the port provided by Vercel or default to 3000)
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
