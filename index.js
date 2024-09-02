@@ -4,13 +4,25 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Middleware for authentication
+const authenticate = (req, res, next) => {
+  const apiKey = req.headers['authorization'];
+
+  // Replace 'YOUR_API_KEY' with your actual API key
+  if (apiKey && apiKey === 'Bearer YOUR_API_KEY') {
+    next(); // Authentication successful, proceed to the next middleware/route handler
+  } else {
+    res.status(401).json({ error: 'Unauthorized' }); // Authentication failed
+  }
+};
+
 // Root endpoint to verify the API is running
 app.get('/', (req, res) => {
   res.send('API is running. Use POST /sort-string to interact with the API.');
 });
 
 // Define the POST route for /sort-string
-app.post('/sort-string', (req, res) => {
+app.post('/sort-string', authenticate, (req, res) => {
   // Log the incoming request for debugging
   console.log('Request Body:', req.body);
 
@@ -42,3 +54,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
